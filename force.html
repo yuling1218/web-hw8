@@ -1,0 +1,190 @@
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  max-width: 100%;
+  height: 550px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am5.ready(function() {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+var root = am5.Root.new("chartdiv");
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+var data = {
+  value: 0,
+  children: [
+    {
+      name: "靜宜大學",
+      children: [
+        {
+          name: "資訊學院",
+          children: [
+            {
+              name: "資工系",
+              value: 2
+            },
+            {
+              name: "資傳系",
+              value: 2
+            },
+            {
+              name: "資管系",
+              value: 2
+            }
+          ]
+        },
+        {
+          name: "理學院",
+          children: [
+            {
+              name: "資科系",
+              value: 2
+            },
+            {
+              name: "財工系",
+              value: 2
+            },
+            {
+              name: "應化系",
+              value: 2
+            },
+            {
+              name: "化科系",
+              value: 2
+            }
+          ]
+        },
+        {
+          name: "管理學院",
+          children: [
+            {
+              name: "觀光系",
+              value: 2
+            },
+            {
+              name: "企管系",
+              value: 2
+            },
+            {
+              name: "國企系",
+              value: 2
+            },
+            {
+              name: "財金系",
+              value: 2
+            },
+            {
+              name: "會計系",
+              value: 2
+            }
+          ]
+        },
+        {
+          name: "外語學院",
+          children: [
+            {
+              name: "英文系",
+              value: 2
+            },
+            {
+              name: "日文系",
+              value: 2
+            },
+            {
+              name: "西文系",
+              value: 2
+            }
+          ]
+        },
+        {
+          name: "人社院",
+          children: [
+            {
+              name: "中文系",
+              value: 2
+            },
+            {
+              name: "社工系",
+              value: 2
+            },
+            {
+              name: "台文系",
+              value: 2
+            },
+            {
+              name: "法律系",
+              value: 2
+            },
+            {
+              name: "生態系",
+              value: 2
+            },
+            {
+              name: "大傳系",
+              value: 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// Create wrapper container
+var container = root.container.children.push(am5.Container.new(root, {
+  width: am5.percent(100),
+  height: am5.percent(100),
+  layout: root.verticalLayout
+}));
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+var series = container.children.push(am5hierarchy.ForceDirected.new(root, {
+  singleBranchOnly: false,
+  downDepth: 2,
+  topDepth: 1,
+  initialDepth: 2,
+  valueField: "value",
+  categoryField: "name",
+  childDataField: "children",
+  idField: "name",
+  linkWithField: "linkWith",
+  manyBodyStrength: -10,
+  centerStrength: 0.8
+}));
+
+series.get("colors").setAll({
+  step: 2
+});
+
+series.links.template.set("strength", 0.5);
+
+series.data.setAll([data]);
+
+series.set("selectedDataItem", series.dataItems[0]);
+
+
+// Make stuff animate on load
+series.appear(1000, 100);
+
+}); // end am5.ready()
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>
